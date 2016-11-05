@@ -28,8 +28,12 @@ class PostsController < ApplicationController
 
   def post_data
     post = Post.find(params[:id])
-    render json: PostSerializer.serialize(post)
-  end
+    respond_to do |format|
+         format.html { render :show }
+         format.json { render json: @post.to_json(only: [:title, :description, :id],
+                                 include: [author: { only: [:name]}]) }
+       end
+    end
 
 private
   # Use callbacks to share common setup or constraints between actions.
